@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
+import 'package:my_weather_app/screens/location_screen.dart';
 import 'package:my_weather_app/services/location.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+import 'package:my_weather_app/services/networking.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
+const apiKey = 'a5f8ee06df5e1566a6a8eabcbaec7f3a';
 
 class LoadingScreen extends StatefulWidget {
   @override
@@ -12,46 +13,34 @@ class LoadingScreen extends StatefulWidget {
 
 class _LoadingScreenState extends State<LoadingScreen> {
 
-
-
   @override
   void initState() {
     super.initState();
-    getLocation();
+    getLocationData();
   }
 
-  void getLocation() async{
+  void getLocationData() async{
   Location location = Location();
   await location.getCurrentLocation();
-  print(location.latitude);
-  print(location.longitude);
-}
+  NetworkHelper networkHelper = NetworkHelper('https://api.openweathermap.org/data/2.5/weather?lat=${location.latitude}&lon=${location.longitude}&appid=$apiKey&units=metric');
 
-void getData() async{
-    http.Response response = await http.get('https://samples.openweathermap.org/data/2.5/weather?lat=35&lon=139&appid=439d4b804bc8187953eb36d2a8c26a02');
-    if(response.statusCode == 200){
-      String data = response.body;
-
-      var decodedData = jsonDecode(data);
-
-      double temp = decodedData['main']['temp'];
-      int condition = decodedData['weather'][0]['id'];
-      String cityName = decodedData['name'];
-
-      print(temp);
-      print(condition);
-      print(cityName);
-
-    } else{
-      print(response.statusCode);
-    }
-}
+  var weatherData = await networkHelper.getData();
+  Navigator.push(context, MaterialPageRoute(builder: (context){
+    return LocationScreen(weatherData);
+  }));
+  }
 
 
   @override
   Widget build(BuildContext context) {
-    getData();
     return Scaffold(
+      body: Center(
+        child: SpinKitFoldingCube(
+          color: Colors.teal,
+          size: 100.0,
+        ),
+      ),
+
     );
   }
 }
