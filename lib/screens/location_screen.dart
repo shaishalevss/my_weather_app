@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:my_weather_app/screens/city_screen.dart';
 import 'package:my_weather_app/utilities/constants.dart';
 import 'package:my_weather_app/services/weather.dart';
 
 class LocationScreen extends StatefulWidget {
-
   LocationScreen(this.locationWeather);
 
   final locationWeather;
@@ -26,8 +26,15 @@ class _LocationScreenState extends State<LocationScreen> {
     print(widget.locationWeather);
   }
 
-  void updateUI(dynamic weatherData){
+  void updateUI(dynamic weatherData) {
     setState(() {
+      if (weatherData == null) {
+        temperature = 0;
+        weatherIcon = 'Error';
+        weatherMsg = 'Unable to get weather data';
+        cityName = 'None';
+        return;
+      }
       double temp = weatherData['main']['temp'];
       temperature = temp.toInt();
       var condition = weatherData['weather'][0]['id'];
@@ -59,18 +66,29 @@ class _LocationScreenState extends State<LocationScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   FlatButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      var weatherData = await weather.getLocationWeather();
+                      updateUI(weatherData);
+                    },
                     child: Icon(
                       Icons.near_me,
                       size: 50.0,
                     ),
                   ),
                   FlatButton(
-                    onPressed: () {},
                     child: Icon(
                       Icons.location_city,
                       size: 50.0,
                     ),
+                    onPressed: () async {
+                      var typedName = await Navigator.push(context, MaterialPageRoute(builder: (context){
+                      return CityScreen();
+                    }));
+                      if(typedName != null){
+                         var weatherData = weather.getCityWeather(typedName);
+                         updateUI(weatherData);
+                      };
+                    },
                   ),
                 ],
               ),
