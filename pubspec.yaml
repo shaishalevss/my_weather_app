@@ -29,3 +29,7 @@ flutter:
       fonts:
         - asset: fonts/SpartanMB-Black.otf
           weight: 900
+
+    - family: ContrailOne
+      fonts:
+        - asset: fonts/ContrailOne-Regular.ttf
