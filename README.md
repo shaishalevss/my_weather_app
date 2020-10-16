@@ -1,16 +1,6 @@
 # my_weather_app
 
-A new Flutter application.
+Weather App that shows you the weather in your area.
+Uses weathermap api.
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+![myWeatherAppGif](https://user-images.githubusercontent.com/39523787/96270549-7a0ba900-0fd4-11eb-83d4-488ee1bea0a0.gif)
